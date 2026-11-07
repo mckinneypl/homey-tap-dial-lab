@@ -1,0 +1,10 @@
+{
+  "name": "homey-tap-dial-lab",
+  "version": "0.5.2",
+  "private": true,
+  "description": "Local Zigbee RDM002 raw frame capture for Homey Pro",
+  "main": "app.js",
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  }
+}

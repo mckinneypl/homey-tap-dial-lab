@@ -1,0 +1,11 @@
+.git/
+.homeybuild/
+test/
+*.log
+*.zip
+*.tar.gz
+.env
+.env.*
+env.json
+credentials.json
+secrets.json

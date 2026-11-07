@@ -1,0 +1,12 @@
+node_modules/
+.homeybuild/
+.env
+.env.*
+env.json
+credentials.json
+secrets.json
+*.log
+*.zip
+*.tar.gz
+*.bak
+.DS_Store

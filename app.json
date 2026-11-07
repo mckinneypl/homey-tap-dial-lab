@@ -1,0 +1,419 @@
+{
+  "id": "com.percy.tapdial.lab",
+  "version": "0.5.2",
+  "sdk": 3,
+  "compatibility": ">=12.0.0",
+  "name": {
+    "en": "Tap Dial Lab"
+  },
+  "description": {
+    "en": "Local RDM002 proportional dimming and a single configurable button recognition Flow trigger."
+  },
+  "category": [
+    "tools"
+  ],
+  "permissions": [
+    "homey:wireless:zigbee"
+  ],
+  "author": {
+    "name": "Percy McKinney"
+  },
+  "images": {
+    "small": "/assets/images/small.png",
+    "large": "/assets/images/large.png"
+  },
+  "drivers": [
+    {
+      "id": "tap-dial",
+      "name": {
+        "en": "Tap Dial (RDM002) - Lab"
+      },
+      "class": "remote",
+      "capabilities": [],
+      "images": {
+        "small": "/drivers/tap-dial/assets/small.png",
+        "large": "/drivers/tap-dial/assets/large.png"
+      },
+      "zigbee": {
+        "manufacturerName": "Signify Netherlands B.V.",
+        "productId": [
+          "RDM002"
+        ],
+        "endpoints": {
+          "1": {
+            "clusters": [
+              0,
+              1,
+              3,
+              64512,
+              4096
+            ],
+            "bindings": [
+              6,
+              8,
+              64512
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "flow": {
+    "triggers": [
+      {
+        "id": "raw_frame",
+        "title": {
+          "en": "A raw Tap Dial Zigbee frame arrived"
+        },
+        "tokens": [
+          {
+            "name": "cluster",
+            "type": "number",
+            "title": {
+              "en": "Cluster (decimal)"
+            }
+          },
+          {
+            "name": "endpoint",
+            "type": "number",
+            "title": {
+              "en": "Endpoint"
+            }
+          },
+          {
+            "name": "hex",
+            "type": "string",
+            "title": {
+              "en": "Raw frame (hex)"
+            }
+          },
+          {
+            "name": "meta",
+            "type": "string",
+            "title": {
+              "en": "Metadata"
+            }
+          }
+        ]
+      },
+      {
+        "id": "rotation_raw",
+        "title": {
+          "en": "A raw Tap Dial level-control frame arrived"
+        },
+        "tokens": [
+          {
+            "name": "hex",
+            "type": "string",
+            "title": {
+              "en": "Raw level-control frame (hex)"
+            }
+          },
+          {
+            "name": "cluster",
+            "type": "number",
+            "title": {
+              "en": "Cluster"
+            }
+          }
+        ]
+      },
+      {
+        "id": "button_raw",
+        "title": {
+          "en": "A Tap Dial button diagnostic frame arrived"
+        },
+        "tokens": [
+          {
+            "name": "sequence",
+            "type": "number",
+            "title": {
+              "en": "ZCL sequence"
+            }
+          },
+          {
+            "name": "candidate_action",
+            "type": "string",
+            "title": {
+              "en": "Candidate action (unverified)"
+            }
+          },
+          {
+            "name": "candidate_code",
+            "type": "number",
+            "title": {
+              "en": "Candidate event code"
+            }
+          },
+          {
+            "name": "candidate_detail",
+            "type": "number",
+            "title": {
+              "en": "Candidate detail"
+            }
+          },
+          {
+            "name": "elapsed_ms",
+            "type": "number",
+            "title": {
+              "en": "Time since prior button frame (ms)"
+            }
+          },
+          {
+            "name": "hex",
+            "type": "string",
+            "title": {
+              "en": "Full frame hex"
+            }
+          }
+        ]
+      },
+      {
+        "id": "button_recognized",
+        "title": {
+          "en": "A Tap Dial button action was recognized"
+        },
+        "args": [
+          {
+            "name": "button",
+            "type": "dropdown",
+            "title": {
+              "en": "Button"
+            },
+            "values": [
+              {
+                "id": "1",
+                "title": {
+                  "en": "Button 1"
+                }
+              },
+              {
+                "id": "2",
+                "title": {
+                  "en": "Button 2"
+                }
+              },
+              {
+                "id": "3",
+                "title": {
+                  "en": "Button 3"
+                }
+              },
+              {
+                "id": "4",
+                "title": {
+                  "en": "Button 4"
+                }
+              }
+            ]
+          },
+          {
+            "name": "action",
+            "type": "dropdown",
+            "title": {
+              "en": "Recognized action"
+            },
+            "values": [
+              {
+                "id": "single",
+                "title": {
+                  "en": "Single"
+                }
+              },
+              {
+                "id": "double",
+                "title": {
+                  "en": "Double"
+                }
+              },
+              {
+                "id": "triple",
+                "title": {
+                  "en": "Triple"
+                }
+              },
+              {
+                "id": "quadruple",
+                "title": {
+                  "en": "Quadruple"
+                }
+              },
+              {
+                "id": "hold",
+                "title": {
+                  "en": "Hold"
+                }
+              },
+              {
+                "id": "long_release",
+                "title": {
+                  "en": "Long Release"
+                }
+              }
+            ]
+          }
+        ],
+        "tokens": [
+          {
+            "name": "button",
+            "type": "number",
+            "title": {
+              "en": "Button number"
+            }
+          },
+          {
+            "name": "action",
+            "type": "string",
+            "title": {
+              "en": "Recognized action"
+            }
+          },
+          {
+            "name": "count",
+            "type": "number",
+            "title": {
+              "en": "Press count"
+            }
+          }
+        ],
+        "titleFormatted": {
+          "en": "Button [[button]]: [[action]]"
+        }
+      },
+      {
+        "id": "rotation_decoded",
+        "title": {
+          "en": "A Tap Dial proportional rotation was decoded"
+        },
+        "args": [
+          {
+            "name": "direction",
+            "type": "dropdown",
+            "title": {
+              "en": "Direction"
+            },
+            "values": [
+              {
+                "id": "clockwise",
+                "title": {
+                  "en": "Clockwise"
+                }
+              },
+              {
+                "id": "counterclockwise",
+                "title": {
+                  "en": "Counterclockwise"
+                }
+              }
+            ]
+          }
+        ],
+        "tokens": [
+          {
+            "name": "sequence",
+            "type": "number",
+            "title": {
+              "en": "ZCL sequence"
+            }
+          },
+          {
+            "name": "direction",
+            "type": "string",
+            "title": {
+              "en": "Direction"
+            }
+          },
+          {
+            "name": "step_size",
+            "type": "number",
+            "title": {
+              "en": "Raw step size (0-255)"
+            }
+          },
+          {
+            "name": "signed_step",
+            "type": "number",
+            "title": {
+              "en": "Signed raw step"
+            }
+          },
+          {
+            "name": "transition_time",
+            "type": "number",
+            "title": {
+              "en": "Transition time"
+            }
+          },
+          {
+            "name": "delta_percent",
+            "type": "number",
+            "title": {
+              "en": "Signed brightness delta (%)"
+            }
+          },
+          {
+            "name": "delta_fraction",
+            "type": "number",
+            "title": {
+              "en": "Signed dim delta (fraction)"
+            }
+          },
+          {
+            "name": "hex",
+            "type": "string",
+            "title": {
+              "en": "Raw Level Control frame"
+            }
+          }
+        ],
+        "titleFormatted": {
+          "en": "Tap Dial rotation [[direction]] decoded"
+        }
+      },
+      {
+        "id": "rotation_brightness",
+        "title": {
+          "en": "Tap Dial ring requests a brightness adjustment"
+        },
+        "tokens": [
+          {
+            "name": "delta",
+            "type": "number",
+            "title": {
+              "en": "Relative dim adjustment (-1 to +1)"
+            }
+          },
+          {
+            "name": "percent",
+            "type": "number",
+            "title": {
+              "en": "Signed brightness adjustment (%)"
+            }
+          },
+          {
+            "name": "step",
+            "type": "number",
+            "title": {
+              "en": "Raw ring step size"
+            }
+          },
+          {
+            "name": "direction",
+            "type": "string",
+            "title": {
+              "en": "Direction"
+            }
+          },
+          {
+            "name": "sequence",
+            "type": "number",
+            "title": {
+              "en": "ZCL sequence"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "brandColor": "#265D88"
+}
